@@ -57,14 +57,23 @@ module.exports = class AuthController {
   }
 
   static async loginPost(req, res) {
-    const { username, password } = req.body;
-    const user = await User.findOne({ where: { email: username } });
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email: email }, raw: true });
     if (user && bcrypt.compareSync(password, user.password)) {
-      alert('usuario autenticado');
-      req.session.user = user;
-      res.redirect('/');
+      req.session.userId = user.id;
+      req.session.save(function () {
+        res.redirect('/toughts');
+      });
     } else {
-      res.redirect('/auth/login');
+      req.flash('error', 'Invalid credentials');
+      req.session.save(function () {
+        res.redirect('/auth/login');
+      });
     }
+  }
+
+  static async logout(req, res) {
+    req.session.destroy();
+    res.redirect('/auth/login');
   }
 }
