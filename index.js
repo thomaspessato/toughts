@@ -19,6 +19,7 @@ const User = require('./models/User');
 
 // Routes
 const toughtsRoutes = require('./routes/toughtsRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Handlebars
 app.engine('handlebars', exphbs.engine());
@@ -71,6 +72,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/toughts', toughtsRoutes);
+app.use('/auth', authRoutes);
 app.get('/', (req, res) => res.redirect('/toughts'));
 
 
