@@ -23,8 +23,8 @@ module.exports = class AuthController {
       return;
     }
 
-    const user = await User.findByEmail(email);
-    if (user) {
+    const userExists = await User.findOne({ where: { email } })
+    if (userExists) {
       req.flash('error', 'Email already in use');
       req.session.save(function () {
         res.redirect('/auth/register');
@@ -32,21 +32,39 @@ module.exports = class AuthController {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User(name, email, hashedPassword);
-    await newUser.save();
-    req.flash('success', 'Registration successful');
-    res.redirect('/login');
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    const user = {
+      name,
+      email,
+      password: hashedPassword,
+    };
+
+    try {
+      const createdUser = await User.create(user);
+      req.session.userId = createdUser.id;
+      req.flash('success', 'Registration successful');
+      req.session.save(function () {
+        res.redirect('/toughts');
+      });
+    } catch (error) {
+      req.flash('error', 'Error creating user');
+      req.session.save(function () {
+        res.redirect('/auth/register');
+      });
+      return;
+    }
   }
 
   static async loginPost(req, res) {
     const { username, password } = req.body;
-    const user = await User.findByUsername(username);
-    if (user && user.password === password) {
+    const user = await User.findOne({ where: { email: username } });
+    if (user && bcrypt.compareSync(password, user.password)) {
+      alert('usuario autenticado');
       req.session.user = user;
       res.redirect('/');
     } else {
-      res.redirect('/login');
+      res.redirect('/auth/login');
     }
   }
 }

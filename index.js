@@ -33,6 +33,8 @@ app.use(express.json());
 app.use(session({
   name: 'toughts.sid',
   secret: 'nosso_secret',
+  resave: false,
+  saveUninitialized: true,
   store: new FileStore({
     logFn: () => {},
     path: require('path').join(require('os').tmpdir(), 'toughts-sessions'),
@@ -55,10 +57,7 @@ app.use(express.static('public'));
 // Set session to res
 app.use((req, res, next) => {
   if(req.session.userId) {
-    res.locals.user = {
-      id: req.session.userId,
-      name: req.session.userName,
-    }
+    res.locals.session = req.session;
   } else {
     res.locals.user = null;
   }
@@ -73,8 +72,9 @@ app.get('/', (req, res) => res.redirect('/toughts'));
 
 
 conn
-  .sync({
-    force: true
-  })
+  // .sync({
+  //   force: true
+  // })
+  .sync()
   .then(() => app.listen(3000, () => console.log('Server running')))
   .catch(console.error);

@@ -19,10 +19,15 @@
     </a>
 
     <ul id="nav-links">
+      {{#if session.userId}}
       <li><a href="/"><i class="bi bi-house-door-fill"></i> Pensamentos</a></li>
-      {{!-- URLS APÓS AUTENTICAÇÃO --}}
+      <li><a href="/profile"><i class="bi bi-person-fill"></i> Perfil</a></li>
+      <li><a href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+      {{else}}
       <li><a href="/auth/login"><i class="bi bi-info-circle-fill"></i> Entrar</a></li>
       <li><a href="/auth/register"><i class="bi bi-envelope-fill"></i> Registrar</a></li>
+      {{/if}}
+
     </ul>
 
   </nav>
