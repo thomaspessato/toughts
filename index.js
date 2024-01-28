@@ -17,10 +17,14 @@ const app = express();
 const Tought = require('./models/Tought');
 const User = require('./models/User');
 
+// Routes
+const toughtsRoutes = require('./routes/toughtsRoutes');
 
 // Handlebars
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
+
+
 
 // Receive body data
 app.use(express.urlencoded({ extended: true }));
@@ -63,6 +67,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+
+// Routes
+app.use('/toughts', toughtsRoutes);
+app.get('/', (req, res) => res.redirect('/toughts'));
 
 
 conn

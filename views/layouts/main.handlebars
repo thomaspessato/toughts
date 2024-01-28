@@ -4,8 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toughts</title>
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
+  <nav id="navbar">
+    <a href="/" id="logo">
+      <img src="/img/toughts_logo.png" alt="Toughts">
+    </a>
+
+    <ul id="nav-links">
+      <li><a href="/"><i class="bi bi-house-door-fill"></i> Pensamentos</a></li>
+      {{!-- URLS APÓS AUTENTICAÇÃO --}}
+      <li><a href="/login"><i class="bi bi-info-circle-fill"></i> Entrar</a></li>
+      <li><a href="/register"><i class="bi bi-envelope-fill"></i> Registrar</a></li>
+    </ul>
+
+  </nav>
+  {{!-- mensagens --}}
   {{{body}}}
 </body>
 </html>
