@@ -51,6 +51,35 @@ body {
   padding: 2em;
 }
 
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container {
+  margin: 0 auto;
+  max-width: 350px;
+}
+
+.form-container input {
+  width: 100%;
+}
+
+.alert {
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 5px;
+  border: 1px solid #f6982d;
+}
+
+.alert-danger {
+  background-color: #f6982d;
+}
+
+.alert-success {
+  background-color: #4caf50;
+}
+
 
 /* FOOTER */
 

@@ -25,8 +25,6 @@ const authRoutes = require('./routes/authRoutes');
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
-
-
 // Receive body data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -35,8 +33,6 @@ app.use(express.json());
 app.use(session({
   name: 'toughts.sid',
   secret: 'nosso_secret',
-  resave: false,
-  saveUninitialized: false,
   store: new FileStore({
     logFn: () => {},
     path: require('path').join(require('os').tmpdir(), 'toughts-sessions'),

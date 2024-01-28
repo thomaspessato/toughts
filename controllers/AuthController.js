@@ -1,6 +1,8 @@
 const Tought = require('../models/Tought');
 const User = require('../models/User');
 
+const bcrypt = require('bcryptjs');
+
 module.exports = class AuthController {
   static async login(req, res) {
     res.render('auth/login');
@@ -10,40 +12,41 @@ module.exports = class AuthController {
     res.render('auth/register');
   }
 
-  // static async login(req, res) {
-  //   const { email, password } = req.body;
-  //   const user = await User.findOne({ where: { email } });
+  static async registerPost(req, res) {
+    const { name, email, password, confirmPassword } = req.body;
 
-  //   if (!user) {
-  //     return res.render('auth/login', { error: 'Usuário não encontrado' });
-  //   }
+    if (password !== confirmPassword) {
+      req.flash('error', 'Passwords do not match');
+      req.session.save(function () {
+        res.redirect('/auth/register');
+      });
+      return;
+    }
 
-  //   if (user.password !== password) {
-  //     return res.render('auth/login', { error: 'Senha incorreta' });
-  //   }
+    const user = await User.findByEmail(email);
+    if (user) {
+      req.flash('error', 'Email already in use');
+      req.session.save(function () {
+        res.redirect('/auth/register');
+      });
+      return;
+    }
 
-  //   req.session.user = user;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User(name, email, hashedPassword);
+    await newUser.save();
+    req.flash('success', 'Registration successful');
+    res.redirect('/login');
+  }
 
-  //   res.redirect('/toughts');
-  // }
-
-  // static async register(req, res) {
-  //   const { name, email, password } = req.body;
-
-  //   const user = await User.findOne({ where: { email } });
-
-  //   if (user) {
-  //     return res.render('auth/register', { error: 'Usuário já cadastrado' });
-  //   }
-
-  //   await User.create({ name, email, password });
-
-  //   res.redirect('/auth/login');
-  // }
-
-  // static async logout(req, res) {
-  //   req.session.destroy();
-
-  //   res.redirect('/auth/login');
-  // }
+  static async loginPost(req, res) {
+    const { username, password } = req.body;
+    const user = await User.findByUsername(username);
+    if (user && user.password === password) {
+      req.session.user = user;
+      res.redirect('/');
+    } else {
+      res.redirect('/login');
+    }
+  }
 }
