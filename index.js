@@ -19,7 +19,7 @@ const User = require('./models/User');
 
 
 // Handlebars
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
 // Receive body data
@@ -52,7 +52,7 @@ app.use(flash());
 app.use(express.static('public'));
 
 // Set session to res
-app.use(req, res, next => {
+app.use((req, res, next) => {
   if(req.session.userId) {
     res.locals.user = {
       id: req.session.userId,
@@ -66,6 +66,8 @@ app.use(req, res, next => {
 
 
 conn
-  .sync()
+  .sync({
+    force: true
+  })
   .then(() => app.listen(3000, () => console.log('Server running')))
   .catch(console.error);
