@@ -15,7 +15,7 @@ const app = express();
 
 
 const Tought = require('./models/Tought');
-
+const User = require('./models/User');
 
 
 // Handlebars
