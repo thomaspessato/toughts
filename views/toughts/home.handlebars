@@ -1,1 +1,33 @@
-<h1>Todos os pensamentos</h1>
+<div class="home-header">
+  <h1>Todos os pensamentos</h1>
+  <form action="/toughts" method="GET">
+    <input type="text" name="search" placeholder="Pesquisar pensamentos...">
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+  </form>
+  <div class="order-container">
+    <p>Ordenar por:</p>
+    <form action="/toughts" method="GET">
+      <input type="hidden" name="search" value="{{search}}">
+      <input type="hidden" name="order" value="new">
+      <button type="submit" class="btn btn-secondary">Mais recentes</button>
+    </form>
+
+    <form action="/toughts" method="GET">
+      <input type="hidden" name="search" value="{{search}}">
+      <input type="hidden" name="order" value="old">
+      <button type="submit" class="btn btn-secondary">Mais antigos</button>
+    </form>
+
+    <a href="/toughts" class="btn btn-secondary">Limpar</a>
+  </div>
+</div>
+
+
+
+{{#each toughts}}
+<div class="tought">
+  <blockquote>{{title}}</blockquote>
+  <p class="date">{{createdAt}}</p>
+  <p class="author">by {{user.name}}</p>
+</div>
+{{/each}}

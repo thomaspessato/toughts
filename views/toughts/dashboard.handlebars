@@ -1,0 +1,33 @@
+<div class="dashboard">
+  <div class="title">
+    <h1>Painel</h1>
+
+    <a href="/toughts/add" class="btn btn-primary">Adicionar Pensamento</a>
+    <a href="/toughts" class="btn btn-secondary">Voltar</a>
+
+  </div>
+
+  <h3>Seus Pensamentos</h3>
+
+  {{!-- list toughts --}}
+
+  {{#each toughts}}
+  <div class="tought">
+    <h3>{{title}}</h3>
+    <p>{{createdAt}}</p>
+    <a href="/toughts/edit/{{id}}" class="btn btn-secondary">Editar</a>
+    <form action="/toughts/remove/" method="POST">
+      <input type="hidden" name="id" value="{{id}}">
+      <button type="submit" class="btn btn-danger">Deletar</button>
+    </form>
+  </div>
+  {{/each}}
+
+  {{#if emptyToughts}}
+  <div class="empty-toughts">
+    <p>Você ainda não adicionou nenhum pensamento.</p>
+    <a href="/toughts/add" class="btn btn-primary">Comece aqui</a>
+  </div>
+  {{/if}}
+
+</div>
